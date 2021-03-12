@@ -37,6 +37,7 @@
 <br><br>
 <button type="button" id="btn">전송</button>
 <button type="button" id="cnl">취소</button>
+<input type="reset" value="취소">
 </form>
 
 <script type="text/javascript">

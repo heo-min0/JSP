@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+<p id="demo"></p>
+<br>
+<button type="button">클릭</button>
+
+<script type="text/javascript">
+$(function () {
+	$("button").click(function() {
+		$.ajax({
+			//가져갈꺼 send 이동할떼
+			url:"data.jsp",
+			type:"get", // get, post  서블릿이나 스프링에서는 중요
+			//data:"t1=XYZ&t2=자차카",
+			data:{t1:"XYZ",t2:"자차카",},
+			
+			//갔다 왔을때 돌아왔을때
+			success:function(data/* ,status,xhr */){
+				//alert("success");
+				//alert(data);
+				$("#demo").html(data); //비동기 목적으로 데이타 가져옴
+				//alert(xhr.responseText);
+			},
+			error:function(/* xhr,status,error */){
+				alert("error");
+			},
+			complete:function(xhr,status){
+				alert("통신종료");
+			}
+			
+			
+		});
+	});
+});
+
+
+</script>
+
+</body>
+</html>

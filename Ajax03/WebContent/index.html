@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+<p id="demo"></p>
+<br>
+<button type="button">클릭</button>
+
+<script type="text/javascript">
+$(function () {
+	$("button").click(function() {
+		//servlet과 통신의 경우 jar파일을 추가해야 한다.
+		$.ajax({
+			url: "hello",
+			type: "get", //서블릿 일때만 중요
+			dataype: "json",
+			//data: "id=abc&pwd=123",
+			data: {id:"bcd", pwd:"234"},
+			success:function(data){
+				//alert("success");	//alert(data.str);
+				//let s = JSON.stringify(data);
+				//alert(data.map.title);
+				//alert(data.map.content);
+				
+				let custlist = data.map.custlist;
+				alert(custlist[0].id);
+				alert(custlist[0].name);
+				alert(data.map.custlist[0].name);
+				
+			},
+			error:function(){
+				alert("fail");
+			},
+		});
+	});
+});
+
+</script>
+
+</body>
+</html>

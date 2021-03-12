@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+<table id="ta"></table>
+name:<p id="name"></p>
+age:<p id="age"></p>
+birth:<p id="birth"></p>
+<br>
+<button type="button">클릭</button>
+
+<script type="text/javascript">
+$(function () {
+	$("button").click(function() {
+		$.ajax({
+			url: "data.jsp",
+			type: "get",
+			datatype: "json",
+			success:function(data){
+				//alert(data);
+				let json = JSON.parse(data);
+				//alert(json);
+				
+				$("#name").text(json.name);
+				$("#age").text(json.age);
+				$("#birth").text(json.birth);
+			},
+			error:function(){
+				alert("error");
+			} 
+		});
+	});
+});
+</script>
+
+</body>
+</html>

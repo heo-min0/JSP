@@ -8,21 +8,9 @@
 </head>
 <body>
 
-<%!int size=0;%>
-<table border="1">
-<%for(int j=0;j<=size;j++){%>
-	<tr>
-		<%for(int i=0;i<11;i++){%>
-			<td><%=j%>*<%=i%>=<%=(j*i)%></td>
-		<%}%>
-	</tr>
-<%}%>
-<%size++;%>
+t1=<%=request.getParameter("t1") %>
+<br>
+t2=<%=request.getParameter("t2") %>
 
-
-
-</table>
-
-<%%>
 </body>
 </html>
