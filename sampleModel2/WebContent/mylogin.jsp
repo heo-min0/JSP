@@ -72,7 +72,7 @@
 </head>
 <body>
 
-<form action="loginAF.jsp" id="frm" method="post">
+<form action="member?param=loginAF" id="frm" method="post">
 <div class="container">
 	<div class="card mb-5" style="max-width: 30rem; margin: 15% auto;">
 		<div class="card-header">
@@ -124,7 +124,7 @@
 
 <script type="text/javascript">
 function account() {
-	location.href = "regi.jsp";
+	location.href = "member?param=regi";
 }
 
 let user_id = $.cookie("user_id");
@@ -142,8 +142,8 @@ $("#checkboxError").click(function() {
 			$("#checkboxError").prop("checked", false);
 			$("#id").val("");
 		}else{//쿠키저장
-			$.cookie("user_id", $("#id").val().trim(), {//쿠키생성 : cookie('name', 'value');
-				expires:7,	path:'./'      
+			$.cookie("user_id", $("#id").val().trim(), {
+				expires:7, path:'./'     
 			});
 		}
 	}

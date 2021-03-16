@@ -4,14 +4,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>bbslist(Bulletin Borad System)전자게시판</title>
 </head>
 <body>
 
-
-<a href="login.jsp">login</a>
-
-<% response.sendRedirect("mylogin.jsp");%>
+<h1>게시판</h1>
 
 </body>
 </html>

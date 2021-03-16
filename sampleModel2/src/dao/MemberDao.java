@@ -75,35 +75,36 @@ public class MemberDao {
 		return id.equals(tid);
 	}
 	
-	public MemberDto getPwd(MemberDto dto) {
-		String sql = "SELECT ID, PWD FROM MEMBER WHERE ID=? AND PWD=? ";
+	public boolean getPwd(String id, String pwd) {
+		String sql = "SELECT ID, PWD FROM MEMBER WHERE ID=?";
+		//String sql = "SELECT COUNT(*) FROM MEMBER WHERE ID = '?'";
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
-		MemberDto mem = null;
+		String lid = null;
+		String lpw = null;
 		
 		try {
 			conn = DBConnection.getConnection();
 			System.out.println("1/3 getPwd success");
 			psmt = conn.prepareStatement(sql);
-			psmt.setString(1, dto.getId());
-			psmt.setString(2, dto.getPwd());
+			psmt.setString(1, id.trim());
 			System.out.println("2/3 getPwd success");
 			rs = psmt.executeQuery();
 			System.out.println("3/3 getPwd success");
 			
 			if(rs.next()) {
-				String id = rs.getString(1);
-				String pwd = rs.getString(2);
-				//String name = rs.getString(3);
-				//String email = rs.getString(4);
-				//int auth = rs.getInt(5);
+				lid = rs.getString("ID");
+				lpw = rs.getString("PWD");
 				System.out.println("4/3 getPwd success");
-				mem = new MemberDto(id, pwd, null, null, 0);
 			}
 		}
 		catch (SQLException e) {System.out.println("getPwd fail");}
 		finally {DBClose.Close(conn, psmt, null);}
-		return mem;
+		
+		System.out.println(id + ", "+lid + ", "+lpw);
+		boolean b = false;
+		if(id.equals(lid) && pwd.equals(lpw)) {	b=true;	}
+		return b;
 	}
 }

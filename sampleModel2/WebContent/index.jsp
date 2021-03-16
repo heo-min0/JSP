@@ -8,10 +8,7 @@
 </head>
 <body>
 
-
-<a href="login.jsp">login</a>
-
-<% response.sendRedirect("mylogin.jsp");%>
+<%response.sendRedirect("member?param=login");%>
 
 </body>
 </html>
