@@ -8,7 +8,7 @@
 </head>
 <body>
 
-<%response.sendRedirect("member?param=login");%>
+<%response.sendRedirect("member?param=mylogin");%>
 
 </body>
 </html>

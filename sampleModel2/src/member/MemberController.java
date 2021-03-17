@@ -10,6 +10,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.PageContext;
+import javax.websocket.Session;
 
 import dao.MemberDao;
 import db.DBClose;
@@ -34,6 +36,9 @@ public class MemberController extends HttpServlet {
 		String param = req.getParameter("param");
 		
 		if(param.equals("login")) {
+			resp.sendRedirect("mylogin.jsp");
+		}
+		else if(param.equals("mylogin")) {
 			resp.sendRedirect("mylogin.jsp");
 		}
 		else if (param.equals("regi")) {
@@ -75,10 +80,13 @@ public class MemberController extends HttpServlet {
 			boolean b = dao.getPwd(id, pwd);
 			String ok = "NO"; 
 			if(b) {ok = "YES"; };
+			MemberDto dto = new MemberDto(id, pwd, null, null, 0);
+			req.getSession().setAttribute("mem", dto);
 			resp.sendRedirect("message.jsp?ok="+ok);
 		}
 		else if (param.equals("bbslist")) {
-			resp.sendRedirect("bbslist.jsp");
+			//req.getRequestDispatcher("bbs?param=bbs").forward(req, resp);
+			resp.sendRedirect("bbs?param=bbs");
 		}
 	}
 }

@@ -20,21 +20,12 @@ public class BbsDao {
 		return dao;
 	}
 	
-	public List<BbsDto> getBbsList(String sort, String ser) {
+	public List<BbsDto> getBbsList() {
 		String sql = "SELECT SEQ, ID, REF, STEP, DEPTH, "
 				+ " TITLE, CONTENT, WDATE, "
 				+ " DELL, READCOUNT "
-				+ " FROM BBS ";
-				
-		String sql1 = "";
-		if(sort.equals("TITLE")) {
-			sql1 = "WHERE TITLE LIKE '%"+ser+"%' ";
-		}else if(sort.equals("CONTENT")) {
-			sql1 = "WHERE CONTENT LIKE '%"+ser+"%' ";
-		}else if(sort.equals("ID")) {
-			sql1 = "WHERE ID='"+ser+"' ";
-		}
-		sql = sql+sql1+" ORDER BY REF DESC, STEP ASC ";
+				+ " FROM BBS "
+				+ " ORDER BY REF DESC, STEP ASC ";
 		
 		Connection conn = null;
 		PreparedStatement psmt = null;
@@ -134,17 +125,8 @@ public class BbsDao {
 		String sql = "SELECT SEQ, ID, REF, STEP, DEPTH, "
 				+ " TITLE, CONTENT, WDATE, "
 				+ " DELL, READCOUNT "
-				+ " FROM BBS ";
-		String sql1 = "";
-		if(sort.equals("TITLE")) {
-			sql1 = "WHERE TITLE LIKE '%"+ser+"%' ";
-		}else if(sort.equals("CONTENT")) {
-			sql1 = "WHERE CONTENT LIKE '%"+ser+"%' ";
-		}else if(sort.equals("ID")) {
-			sql1 = "WHERE ID='"+ser+"' ";
-		}
-		sql = sql+sql1+" ORDER BY REF DESC, STEP ASC ";
-
+				+ " FROM BBS "
+				+ " WHERE " + sort + " LIKE ? ";
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
@@ -154,6 +136,9 @@ public class BbsDao {
 			conn = DBConnection.getConnection();
 			psmt = conn.prepareStatement(sql);
 			System.out.println("2/3 search "+sort + ", " + ser);
+			
+			//psmt.setString(1, sort);
+			psmt.setString(1, "%"+ser+"%");
 			rs = psmt.executeQuery();
 			System.out.println("3/3 search");
 			while (rs.next()) {

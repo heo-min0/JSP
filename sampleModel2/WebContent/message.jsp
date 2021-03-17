@@ -29,12 +29,24 @@
 		alert("로그인 성공")
 		location.href = "member?param=bbslist";
 	</script>
-<%}else{%>
+<%}else if((ok!=null && ok.equals("NO"))){%>
 	<script type="text/javascript">
 		alert("아이디와 비밀번호가 일치하지 않습니다.");
 		location.href = "member?param=login";
 	</script>
 <%}%>
 
+<%String w = request.getParameter("w");%>
+<%if(w!=null && w.equals("true")){%>
+	<script type="text/javascript">
+		alert("글쓰기 성공")
+		location.href = "bbs?param=bbs";
+	</script>
+<%}else if((w!=null && ok.equals("false"))){%>
+	<script type="text/javascript">
+		alert("글쓰기 실패");
+		location.href = "bbs?param=bbs";
+	</script>
+<%}%>
 </body>
 </html>

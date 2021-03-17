@@ -15,7 +15,7 @@ MemberDto mem = (MemberDto)session.getAttribute("mem");
 <body>
 <!-- 글 작성 -->
 
-<form action="bbswriteAF.jsp" id="frm" method="post">
+<form action="bbs?param=writeAF" method="post">
 <div align="center" style="margin: 30px">
 <table border="1">
 <tr>

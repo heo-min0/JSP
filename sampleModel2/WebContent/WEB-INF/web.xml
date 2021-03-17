@@ -19,4 +19,12 @@
 	<url-pattern>/member</url-pattern>
 </servlet-mapping>
 
+<servlet>
+	<servlet-name>bbs</servlet-name>
+	<servlet-class>bbs.BbsController</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>bbs</servlet-name>
+	<url-pattern>/bbs</url-pattern>
+</servlet-mapping>
 </web-app>

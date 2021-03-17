@@ -4,10 +4,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
-String seq = request.getParameter("seq");
-BbsDao dao = BbsDao.getInstancs();
-BbsDto dto = dao.getBbsseq(seq);
-dao.readcount(Integer.parseInt(seq));
+BbsDto dto = (BbsDto)request.getAttribute("dto");
+BbsDao dao = BbsDao.getInstancs(); 
+dao.readcount(dto.getSeq());
 MemberDto mem = (MemberDto)session.getAttribute("mem");
 %>
 <!DOCTYPE html>
@@ -52,22 +51,17 @@ MemberDto mem = (MemberDto)session.getAttribute("mem");
 
 <div align="center">
 <%if(mem.getId().equals(dto.getId()) ){ %>
-	<button type="button" id="del" onclick="del()" style="font-size: 18px">글삭제</button>
+	<button type="button" id="del" onclick="bbs?param=del&seq=<%=dto.getSeq() %>" style="font-size: 18px">글삭제</button>
 	<button type="button" id="update" onclick="upda()" style="font-size: 18px">글수정</button>
 <%} %>	
-	<button type="button" id="list" onclick="list()" style="font-size: 18px">글목록</button>
-	<button type="button" onclick="answerbbs(<%=seq %>)" style="font-size: 18px">답글</button>
+	<button type="button" id="list" onclick="bbs?param=bbs" style="font-size: 18px">글목록</button>
+	<button type="button" onclick="answerbbs(<%=dto.getSeq() %>)" style="font-size: 18px">답글</button>
 </div>
 
 <script type="text/javascript">
-function list() {
-	location.href = "bbslist.jsp";
-}
-function del() {
-	location.href = "bbsdetailAF.jsp?seq=<%=seq %>";
-}
+<%-- function del() {location.href = "bbsdetailAF.jsp?seq=<%=dto.getSeq() %>";} --%>
 function upda() {
-	location.href = "bbsupdate.jsp?seq=<%=seq %>";
+	location.href = "bbsupdate.jsp?seq=<%=dto.getSeq() %>";
 }
 function answerbbs(seq) {
 	location.href = "answer.jsp?seq="+seq;
