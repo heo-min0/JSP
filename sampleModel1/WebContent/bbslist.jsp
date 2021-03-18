@@ -40,24 +40,49 @@ if(ser == null) ser = "";
 
 <%//dao로부터 list
 BbsDao dao = BbsDao.getInstancs();
-List<BbsDto> list = dao.getBbsList(thr,ser);
+
+String spageNumber = request.getParameter("pageNumber");
+int pageNumber=0; //현재 페이지
+if(spageNumber !=null && !spageNumber.equals("")){//페이지 번호 클릭
+	pageNumber = Integer.parseInt(spageNumber);
+}
+System.out.println("페이지넘버"+pageNumber);
+//List<BbsDto> list = dao.getBbsList(thr,ser);
+List<BbsDto> list = dao.getBbsPagingList(thr,ser,pageNumber);
+int len = dao.getAllBbs(thr, ser);
+System.out.println("글 수" + len);
+int bbsPage = len / 10; //23 > 2
+if((len % 10) > 0){ bbsPage += 1; }
 %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
+<title>bbslist(Bulletin Borad System)전자게시판</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<title>bbslist(Bulletin Borad System)전자게시판</title>
+
+<script type="text/javascript">
+$(document).ready(function() {
+	let search = "<%=ser %>";
+	if(search == "") return;
+	
+	let obj = document.getElementById("three");
+	obj.value = "<%=thr %>";
+	obj.setAttribute("selected", "selected");
+});
+</script>
+
+
 </head>
 <body>
 <h4 align="right" style="background-color: #f0f0f0">환영합니다. <%=mem.getId() %>님</h4>
 <h1>게시판</h1>
 
-<div align="center" style="width: 70%; text-align: center;" >
+<div align="center" style="width: 70%;" >
 
 <table border="1" style="margin: 10%;" class="table table-hover">
 <col width="70"><col width="600"><col width="150">
@@ -86,31 +111,56 @@ List<BbsDto> list = dao.getBbsList(thr,ser);
 			</td>
 			<td><%=bbs.getId() %></td>
 		</tr>
-			
 		<%
 	}
-
 }%>
-
 </table>
+<!-- 페이징 -->
+<div align="center">
+<%
+for(int i = 0; i<bbsPage;i++){
+	if(pageNumber == i) { //현재 페이지
+		%>
+		<span style="font-size: 15pt; color: #0000dd; font-weight: bold;">
+		<%=i+1 %>
+		</span>&nbsp;
+		<% 
+	}
+	else{
+		%>
+		<a href="#none" title="<%=i+1 %>페이지" onclick="goPage(<%=i %>)" 
+		style="font-size: 15pt; color: #000; font-weight: bold; text-decoration: none;" >
+		[<%=i+1 %>]&nbsp;
+		</a>
+		<%
+	}
+}
+%>
+</div>
 
-<br><br>
+<br>
 <select id="three">
 	<option value="TITLE" selected>제목</option>
 	<option value="CONTENT">내용</option>
 	<option value="ID">작성자</option>
 </select>
-<input type="text" id="ser">
+<input type="text" id="ser" value="<%=ser %>">
 <button type="button" id="btn" onclick="search()">검색</button>
 <br><br>
 <a href="bbswrite.jsp">글쓰기</a>
 </div>
 
 <script type="text/javascript">
+
 function search() {
-	let thr = document.getElementById('three').value
-	let ser = document.getElementById('ser').value
+	let thr = document.getElementById('three').value;
+	let ser = document.getElementById('ser').value;
 	location.href = "bbslist.jsp?thr="+thr+"&ser="+ser;
+}
+function goPage(pageNum) {
+	let thr = document.getElementById('three').value;
+	let ser = document.getElementById('ser').value;
+	location.href = "bbslist.jsp?thr="+thr+"&ser="+ser+"&pageNumber="+pageNum;
 }
 </script>
 

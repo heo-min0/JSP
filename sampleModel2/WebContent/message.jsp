@@ -42,11 +42,29 @@
 		alert("글쓰기 성공")
 		location.href = "bbs?param=bbs";
 	</script>
-<%}else if((w!=null && ok.equals("false"))){%>
+<%}else if((w!=null && w.equals("false"))){%>
 	<script type="text/javascript">
 		alert("글쓰기 실패");
 		location.href = "bbs?param=bbs";
 	</script>
 <%}%>
+
+<%String d = request.getParameter("d");%>
+<%if(d!=null && d.equals("true")){%>
+	<script type="text/javascript">
+		alert("삭제 성공")
+		location.href = "bbs?param=bbs";
+	</script>
+<%}else if((d!=null && d.equals("false"))){%>
+	<script type="text/javascript">
+		alert("삭제 실패");
+		location.href = "bbs?param=bbs";
+	</script>
+<%}%>
+
 </body>
 </html>
+
+
+
+

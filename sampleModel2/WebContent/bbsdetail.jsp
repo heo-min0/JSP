@@ -51,22 +51,16 @@ MemberDto mem = (MemberDto)session.getAttribute("mem");
 
 <div align="center">
 <%if(mem.getId().equals(dto.getId()) ){ %>
-	<button type="button" id="del" onclick="bbs?param=del&seq=<%=dto.getSeq() %>" style="font-size: 18px">글삭제</button>
-	<button type="button" id="update" onclick="upda()" style="font-size: 18px">글수정</button>
-<%} %>	
-	<button type="button" id="list" onclick="bbs?param=bbs" style="font-size: 18px">글목록</button>
-	<button type="button" onclick="answerbbs(<%=dto.getSeq() %>)" style="font-size: 18px">답글</button>
+	<button type="button" id="del"
+	 onclick="location.href='bbs?param=del&seq=<%=dto.getSeq() %>'"
+	 style="font-size: 18px">글삭제</button>
+	<button type="button" id="update" onclick="location.href='bbs?param=update&seq=<%=dto.getSeq() %>'"
+	 style="font-size: 18px">글수정</button>
+<%}%>
+	<button type="button" id="list" onclick="location.href='bbs?param=bbs'" style="font-size: 18px">글목록</button>
+	<button type="button" onclick="location.href='bbs?param=answer&seq=<%=dto.getSeq() %>'"
+	 style="font-size: 18px">답글</button>
 </div>
-
-<script type="text/javascript">
-<%-- function del() {location.href = "bbsdetailAF.jsp?seq=<%=dto.getSeq() %>";} --%>
-function upda() {
-	location.href = "bbsupdate.jsp?seq=<%=dto.getSeq() %>";
-}
-function answerbbs(seq) {
-	location.href = "answer.jsp?seq="+seq;
-}
-</script>
 
 </body>
 </html>

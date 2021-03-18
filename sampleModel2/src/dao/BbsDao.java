@@ -126,7 +126,7 @@ public class BbsDao {
 				+ " TITLE, CONTENT, WDATE, "
 				+ " DELL, READCOUNT "
 				+ " FROM BBS "
-				+ " WHERE " + sort + " LIKE ? ";
+				+ " WHERE " + sort + " LIKE ? AND DELL=0 ";
 		Connection conn = null;
 		PreparedStatement psmt = null;
 		ResultSet rs = null;
@@ -288,4 +288,97 @@ public class BbsDao {
 		return count>0?true:false;
 	}
 	
+	public int getAllBbs(String choice, String search) {
+		String sql = "SELECT COUNT(*) FROM BBS ";
+				
+		String sql1 = "";
+		if(choice.equals("title")) {
+			sql1 = "WHERE TITLE LIKE '%"+search+"%' AND DELL=0 ";
+		}else if(choice.equals("content")) {
+			sql1 = "WHERE CONTENT LIKE '%"+search+"%' AND DELL=0 ";
+		}else if(choice.equals("id")) {
+			sql1 = "WHERE ID='"+search+"' AND DELL=0 ";
+		}
+		sql = sql+sql1+" ORDER BY REF DESC, STEP ASC ";
+		
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		
+		int len = 0;
+		
+		try {
+			conn = DBConnection.getConnection();
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				len = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {System.out.println("getAllBbs fail");}
+		finally {DBClose.Close(conn, psmt, rs);	}
+		int slen = len/10;
+		if(len%10 > 0) slen += 1; 
+		return slen;
+	}
+	
+	public List<BbsDto> getBbsPagingList(String choice, String search, int page) {
+		
+		String sql = " SELECT SEQ, ID, REF, STEP, DEPTH, "
+					+ " TITLE, CONTENT, WDATE, DELL, READCOUNT "
+					+ " FROM ";
+		sql += "(SELECT ROW_NUMBER()OVER(ORDER BY REF DESC, STEP ASC) AS RNUM, " + 
+			   " SEQ, ID, REF, STEP, DEPTH, TITLE, CONTENT, WDATE, DELL, READCOUNT " + 
+			   " FROM BBS ";
+				
+		String sWord = "";
+		if(choice.equals("title")) {
+			sWord = " WHERE TITLE LIKE '%" + search + "%' AND DELL=0 ";
+		}else if(choice.equals("content")) {
+			sWord = " WHERE CONTENT LIKE '%" + search + "%' AND DELL=0 ";
+		}else if(choice.equals("id")) {
+			sWord = " WHERE ID='" + search + "' AND DELL=0 ";
+		} 
+		sql += sWord + " ORDER BY REF DESC, STEP ASC) ";
+		sql += " WHERE RNUM >= ? AND RNUM <= ? ";
+		
+		int start = 10*page + 1;
+		int end = 10*page + 10;		
+		
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		List<BbsDto> list = new ArrayList<BbsDto>();
+		
+		try {
+			conn = DBConnection.getConnection();
+			System.out.println("1/4 getBbsSearchList success");
+				
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, start);
+			psmt.setInt(2, end);
+			System.out.println("2/4 getBbsSearchList success");
+			
+			rs = psmt.executeQuery();			
+			System.out.println("3/4 getBbsSearchList success");
+			
+			while(rs.next()) {
+				BbsDto dto = new BbsDto(rs.getInt(1), 
+										rs.getString(2), 
+										rs.getInt(3), 
+										rs.getInt(4), 
+										rs.getInt(5), 
+										rs.getString(6), 
+										rs.getString(7), 
+										rs.getString(8), 
+										rs.getInt(9), 
+										rs.getInt(10));
+				list.add(dto);
+			}			
+			System.out.println("4/4 getBbsSearchList success");
+		}
+		catch (SQLException e) { System.out.println("getBbsSearchList fail");}
+		finally { DBClose.Close(conn, psmt, rs); }
+		return list;
+	}
 }

@@ -67,6 +67,62 @@ public class BbsDao {
 		return list;
 	}
 	
+	public List<BbsDto> getBbsPagingList(String sort, String ser, int page) {
+		String sql = "SELECT SEQ, ID, REF, STEP, DEPTH, TITLE, CONTENT, WDATE, DELL, READCOUNT "
+				+ "FROM ";
+		sql +="(SELECT ROW_NUMBER()OVER(ORDER BY REF DESC, STEP ASC) AS RNUM, " 
+				+ " SEQ, ID, REF, STEP, DEPTH, TITLE, CONTENT, WDATE, DELL, READCOUNT " 
+				+ " FROM BBS ";
+				
+		String sql1 = "";
+		if(sort.equals("TITLE")) {
+			sql1 = "WHERE TITLE LIKE '%"+ser+"%' ";
+		}else if(sort.equals("CONTENT")) {
+			sql1 = "WHERE CONTENT LIKE '%"+ser+"%' ";
+		}else if(sort.equals("ID")) {
+			sql1 = "WHERE ID='"+ser+"' ";
+		}
+		sql = sql+sql1+" ORDER BY REF DESC, STEP ASC) ";
+		
+		sql += " WHERE RNUM >=? AND RNUM <=?";
+		
+		int start, end;
+		start = 1 + 10*page;
+		end = 10 + 10*page;
+		
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		
+		List<BbsDto> list = new ArrayList<BbsDto>();
+		
+		try {
+			conn = DBConnection.getConnection();
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, start);
+			psmt.setInt(2, end);
+			rs = psmt.executeQuery();
+			
+			while (rs.next()) {
+				BbsDto dto = new BbsDto( rs.getInt(1), // seq,
+										 rs.getString(2), // id,
+										 rs.getInt(3), //ref,
+										 rs.getInt(4), //step,
+										 rs.getInt(5), //depth,
+										 rs.getString(6), //title,
+										 rs.getString(7), //content,
+										 rs.getString(8), //wdate,
+										 rs.getInt(9), //del,
+										 rs.getInt(10) ); //readcount
+				list.add(dto);
+			}
+			System.out.println("4/4 getBbsList");
+			
+		} catch (SQLException e) {System.out.println("getBbsList fail");}
+		finally {DBClose.Close(conn, psmt, rs);	}
+		return list;
+	}
+	
 	public boolean addBbs(BbsDto dto) {
 		String sql = "INSERT INTO BBS (SEQ, ID, REF, STEP, DEPTH, TITLE, "
 					+ "CONTENT, WDATE, DELL, READCOUNT ) "
@@ -303,4 +359,37 @@ public class BbsDao {
 		return count>0?true:false;
 	}
 	
+	public int getAllBbs(String choice, String search) {
+		String sql = "SELECT COUNT(*) FROM BBS ";
+				
+		String sql1 = "";
+		if(choice.equals("TITLE")) {
+			sql1 = "WHERE TITLE LIKE '%"+search+"%' ";
+		}else if(choice.equals("CONTENT")) {
+			sql1 = "WHERE CONTENT LIKE '%"+search+"%' ";
+		}else if(choice.equals("ID")) {
+			sql1 = "WHERE ID='"+search+"' ";
+		}
+		sql = sql+sql1+" ORDER BY REF DESC, STEP ASC ";
+		
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		ResultSet rs = null;
+		
+		int len = 0;
+		
+		try {
+			conn = DBConnection.getConnection();
+			psmt = conn.prepareStatement(sql);
+			rs = psmt.executeQuery();
+			if(rs.next()) {
+				len = rs.getInt(1);
+			}
+			
+		} catch (SQLException e) {System.out.println("getAllBbs fail");}
+		finally {DBClose.Close(conn, psmt, rs);	}
+		
+		return len;
+		
+	}
 }

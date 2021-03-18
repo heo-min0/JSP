@@ -85,7 +85,7 @@
 		<div class="card-body">		
 			<div class="input-group">
 				<span class="input" id="basic-addon1">
-					<img class="icon" alt="" src="./icon.png">
+					<img class="icon" alt="" src="./img/icon.png">
 				</span>
   				<input type="text" class="form-control" aria-describedby="basic-addon1" id="id" name="id">
 			</div>
@@ -94,7 +94,7 @@
 
 			<div class="input-group">
 				<span class="input" id="basic-addon1">
-					<img class="key" alt="" src="./key.png">
+					<img class="key" alt="" src="./img/key.png">
 				</span>
   				<input type="password" class="form-control" aria-describedby="basic-addon1" id="pw" name="pwd">
 			</div>
