@@ -49,7 +49,7 @@ readonly="readonly">
  MemberDto mem = (MemberDto)session.getAttribute("login");
  %>
  <h2>답글</h2>
- <form action="bbs?param=answerAF" method="post">
+ <form action="bbs?param=answerAF&seq<%=bbs.getSeq()%>" method="post">
  <input type="hidden" name="seq" value="<%=bbs.getSeq()%>"> 
 
 <table border="1">

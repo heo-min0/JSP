@@ -6,7 +6,7 @@
 <%
 BbsDto dto = (BbsDto)request.getAttribute("dto");
 BbsDao dao = BbsDao.getInstancs(); 
-dao.readcount(dto.getSeq());
+
 MemberDto mem = (MemberDto)session.getAttribute("mem");
 %>
 <!DOCTYPE html>
