@@ -82,9 +82,12 @@ $(document).ready(function() {
 <h4 align="right" style="background-color: #f0f0f0">환영합니다. <%=mem.getId() %>님</h4>
 <h1>게시판</h1>
 
+<a href="calendarlist.jsp">일정관리</a>
+<br>
+
 <div align="center" style="width: 70%;" >
 
-<table border="1" style="margin: 10%;" class="table table-hover">
+<table style="margin: 10%;" class="table table-hover">
 <col width="70"><col width="600"><col width="150">
 <tr>
 	<th>번호</th><th>제목</th><th>작성자</th>
