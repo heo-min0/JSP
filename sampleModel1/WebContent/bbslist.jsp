@@ -83,6 +83,7 @@ $(document).ready(function() {
 <h1>게시판</h1>
 
 <a href="calendarlist.jsp">일정관리</a>
+<a href="pdslist.jsp">자료실</a>
 <br>
 
 <div align="center" style="width: 70%;" >
