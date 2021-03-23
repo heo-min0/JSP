@@ -22,7 +22,7 @@ String filename = (new Date().getTime())+"";
 
 <div align="center">
 
-<form action="pdsupdateAF.jsp?seq=<%=pds.getSeq()%>&filename=<%=filename%>" method="post">
+<form action="pdsupdateAF.jsp?seq=<%=pds.getSeq()%>" method="post" enctype="multipart/form-data">
 
 <table border="1">
 <col width="200"><col width="500">
@@ -34,6 +34,13 @@ String filename = (new Date().getTime())+"";
 </tr>
 <tr>
 	<th>파일 업로드</th>
+	<td>
+		<input type="text" name="orifilename" value="<%=pds.getOriFilename()%>" readonly="readonly">
+		<input type="hidden" name="filename" value="<%=pds.getFilename()%>">
+	</td>
+</tr>
+<tr>
+	<th>변경할 파일 업로드</th>
 	<td>
 		<input type="file" name="fileload" style="width: 400px;">
 	</td>

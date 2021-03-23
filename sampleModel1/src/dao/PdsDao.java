@@ -20,8 +20,8 @@ public class PdsDao {
 	public List<PdsDto> getPdsList() {
 		
 		String sql = " SELECT SEQ, ID, TITLE, CONTENT,"
-				+ " FILENAME, ORIFILENAME, READCOUNT, DOWNCOUNT, REGDATE"
-				+ " FROM PDS "
+				+ " FILENAME, ORIFILENAME, READCOUNT, DOWNCOUNT, REGDATE, DELL "
+				+ " FROM PDS WHERE DELL=0 "
 				+ " ORDER BY SEQ DESC "; //+ " ORDER BY REF DESC STEP ASC "
 		
 		Connection conn = null;
@@ -45,7 +45,8 @@ public class PdsDao {
 										rs.getString(i++),  //orifilename
 										rs.getInt(i++), 	//readcount
 										rs.getInt(i++), 	//downcount
-										rs.getString(i++)); //regdate
+										rs.getString(i++),  //regdate
+										rs.getInt(i++)); 	//dell
 				list.add(dto);
 			}
 			System.out.println("4/4 getPdsList");
@@ -57,9 +58,9 @@ public class PdsDao {
 	
 	public boolean writePds(PdsDto pds) {
 		String sql = " INSERT INTO PDS(SEQ,ID,TITLE,CONTENT,FILENAME,ORIFILENAME, "
-				+ " READCOUNT, DOWNCOUNT, REGDATE) "
+				+ " READCOUNT, DOWNCOUNT, REGDATE, DELL) "
 				+ " VALUES(SEQ_PDS.NEXTVAL,?,?,?,?,?, "
-				+ " 0, 0, SYSDATE)";
+				+ " 0, 0, SYSDATE, 0)";
 		
 		Connection conn = null;
 		PreparedStatement psmt = null;
@@ -86,7 +87,7 @@ public class PdsDao {
 	
 	public PdsDto getPdsDto(int seq) {
 		String sql = " SELECT SEQ, ID, TITLE, CONTENT,"
-				+ " FILENAME, ORIFILENAME, READCOUNT, DOWNCOUNT, REGDATE"
+				+ " FILENAME, ORIFILENAME, READCOUNT, DOWNCOUNT, REGDATE, DELL "
 				+ " FROM PDS "
 				+ " WHERE SEQ=? ";
 		
@@ -112,7 +113,8 @@ public class PdsDao {
 										rs.getString(i++),  //orifilename
 										rs.getInt(i++), 	//readcount
 										rs.getInt(i++), 	//downcount
-										rs.getString(i++)); //regdate
+										rs.getString(i++),  //regdate
+										rs.getInt(i++)); 	//dell
 			}
 			System.out.println("3/3 getPdsDto");
 		}
@@ -148,13 +150,9 @@ public class PdsDao {
 	}
 	
 	public boolean updatePds(PdsDto pds, String seq) {
-		String sql = " UPDATE PDS SET REGDATE=SYDATE, TITLE=?, CONTENT=?, ";
-		if(pds.getOriFilename()!="") {
-			sql += " FILENAME=?, ORIFILENAME=? ";
-		}
-		sql += " WHERE SEQ=? ";
-		System.out.println("ori:"+pds.getOriFilename() +", " + pds.getFilename());
-		System.out.println("up sql:"+sql);
+		String sql = " UPDATE PDS SET REGDATE=SYSDATE, TITLE=?, CONTENT=?, "
+				+ " FILENAME=?, ORIFILENAME=?"
+				+ " WHERE SEQ=? ";
 		
 		Connection conn = null;
 		PreparedStatement psmt = null;
@@ -162,14 +160,12 @@ public class PdsDao {
 		try {
 			conn = DBConnection.getConnection();
 			System.out.println("1/3 updatePds");
-			
 			psmt = conn.prepareStatement(sql);
 			psmt.setString(1, pds.getTitle());
 			psmt.setString(2, pds.getContent());
-			if(pds.getOriFilename()!="") {
-				psmt.setString(3, pds.getFilename());
-				psmt.setString(4, pds.getOriFilename());
-			}
+			psmt.setString(3, pds.getFilename());
+			psmt.setString(4, pds.getOriFilename());
+			psmt.setInt(5, Integer.parseInt(seq));
 			System.out.println("2/3 updatePds");
 			
 			count = psmt.executeUpdate();
@@ -180,4 +176,24 @@ public class PdsDao {
 		return count>0?true:false;
 	}
 	
+	public boolean deletePds(String seq) {
+		String sql = "UPDATE PDS SET DELL=1 WHERE SEQ=? ";
+		
+		Connection conn = null;
+		PreparedStatement psmt = null;
+		int count = 0;
+		try {
+			conn = DBConnection.getConnection();
+			System.out.println("1/3 deletePds");
+			psmt = conn.prepareStatement(sql);
+			psmt.setInt(1, Integer.parseInt(seq));
+			System.out.println("2/3 deletePds");
+			
+			count = psmt.executeUpdate();
+			System.out.println("3/3 deletePds");
+			
+		}catch (SQLException e) {System.out.println("fail deletePds");}
+		finally { DBClose.Close(conn, psmt, null);}
+		return count>0?true:false;
+	}
 }

@@ -330,7 +330,7 @@ public class BbsDao {
 		sql += "(SELECT ROW_NUMBER()OVER(ORDER BY REF DESC, STEP ASC) AS RNUM, " + 
 			   " SEQ, ID, REF, STEP, DEPTH, TITLE, CONTENT, WDATE, DELL, READCOUNT " + 
 			   " FROM BBS ";
-				
+		System.out.println("또 확인 : "+choice);		
 		String sWord = "";
 		if(choice.equals("title")) {
 			sWord = " WHERE TITLE LIKE '%" + search + "%' AND DELL=0 ";

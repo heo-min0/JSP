@@ -39,7 +39,7 @@ public class BbsController extends HttpServlet{
 
 			int page = 0;
 			if(choice == null) choice = "";
-			if(search == null) search = "";
+			if(search == null || search.equals("")) {search = ""; choice = "";}
 			if(spage != null) page = Integer.parseInt(spage);
 			System.out.println("확인:"+choice+search+page);
 			

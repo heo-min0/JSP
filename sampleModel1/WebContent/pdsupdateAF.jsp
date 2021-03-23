@@ -1,3 +1,4 @@
+<%@page import="java.util.Date"%>
 <%@page import="dto.PdsDto"%>
 <%@page import="dao.PdsDao"%>
 <%@page import="java.util.Iterator"%>
@@ -49,7 +50,7 @@ String id = "", title = "", content = "";
 
 //file명 저장
 String orifilename = "";
-String filename = request.getParameter("filename");
+String filename = "";
 
 //데이터가 multipart/form-data형식으로 전송되었는지 확인
 boolean isMultipart = ServletFileUpload.isMultipartContent(request);
@@ -71,10 +72,17 @@ if(isMultipart == true){
 				title = item.getString("utf-8");
 			}else if(item.getFieldName().equals("content")){
 				content = item.getString("utf-8");
+			}else if(item.getFieldName().equals("orifilename")){
+				orifilename = item.getString("utf-8");
+			}else if(item.getFieldName().equals("filename")){
+				filename = item.getString("utf-8");
 			}
 		}else{ //file
 			if(item.getFieldName().equals("fileload")){
-				orifilename = processUploadFile(item, fupload, filename);
+				if(item.getName() !=null && !item.getName().equals("")){
+					filename = (new Date().getTime())+"";
+					orifilename = processUploadFile(item, fupload, filename);
+				}
 			}
 		}
 	}

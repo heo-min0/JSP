@@ -21,9 +21,9 @@ if(search == null) search = "";
 	for(int i = 0;i<depth;i++){	ts += nbsp;	}
 	return depth==0?"":ts+rs;
 }%>
-<%System.out.println("choice"+choice + ", search"+search);%>
+<%System.out.println("choice:"+choice + ", search:"+search);%>
 <%int pageNum = BbsDao.getInstancs().getAllBbs(choice, search);%>
-<%System.out.println("pageNum"+pageNum);%>
+<%System.out.println("pageNum:"+pageNum);%>
 <!DOCTYPE html>
 <html>
 <head>
