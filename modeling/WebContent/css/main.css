@@ -1,0 +1,37 @@
+@charset "UTF-8";
+
+.header{
+	background-color: #e8d3c1;	
+	color:white;
+	
+}
+	
+.linkcol{
+	
+	text-decoration: none;
+	color: white;
+}
+a.linkcol:hover{
+	color: #4b4b49;
+	
+}
+
+a.linkcol:active{
+	color: #4b4b49;
+}
+
+
+
+.brandcol{
+	
+	text-decoration: none;
+	color: white;
+}
+a.brandcol:hover{
+	color: #4b4b49;
+	
+}
+
+a.brandcol:active{
+	color: #4b4b49;
+}
